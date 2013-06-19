@@ -6,8 +6,16 @@ namespace Envelop
     /// <summary>
     /// <c>IBuilder</c> interface for exposing basic binding and type resolution functions
     /// </summary>
-    public interface IBuilder : IResolver
+    public interface IBuilder
     {
+        /// <summary>
+        /// Gets the kernel.
+        /// </summary>
+        /// <value>
+        /// The kernel.
+        /// </value>
+        IKernel Kernel { get; }
+
         /// <summary>
         /// Fluent interface for defining bindings.
         /// </summary>
@@ -17,6 +25,18 @@ namespace Envelop
         /// TODO: insert some basic examples
         /// </example>
         IBindingTo<TInterface> Bind<TInterface>();
+
+        /// <summary>
+        /// Gets the bindings.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<IBinding> GetBindings();
+
+        /// <summary>
+        /// Adds a binding.
+        /// </summary>
+        /// <param name="binding">The binding.</param>
+        void AddBinding(IBinding binding);
     }
 
     /// <summary>

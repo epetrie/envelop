@@ -47,11 +47,12 @@
     <Compile Include="Binding.cs" />
     <Compile Include="BindingConstraint.cs" />
     <Compile Include="BindingContraints.cs" />
+    <Compile Include="IModule.cs" />
     <Compile Include="IncompleteBindingException.cs" />
     <Compile Include="DefaultBindingResolver.cs" />
     <Compile Include="BindingTo.cs" />
     <Compile Include="Builder.cs" />
-    <Compile Include="Kernel.cs" />
+    <Compile Include="BasicKernel.cs" />
     <Compile Include="IBinding.cs" />
     <Compile Include="IBindingContraints.cs" />
     <Compile Include="IBindingResolver.cs" />

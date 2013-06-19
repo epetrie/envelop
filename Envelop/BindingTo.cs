@@ -7,12 +7,12 @@ namespace Envelop
 {
     class BindingTo<T> : IBindingTo<T>
     {
-        private readonly IBuilder _builder;
+        private readonly IKernel _kernel;
         private readonly IBinding<T> _binding;
 
-        internal BindingTo(IBuilder builder, IBinding<T> binding)
+        internal BindingTo(IKernel kernel, IBinding<T> binding)
         {
-            _builder = builder;
+            _kernel = kernel;
             _binding = binding;
         }
 
@@ -28,16 +28,16 @@ namespace Envelop
                 foreach (var item in cache)
                 {
                     var requests = item.Parameters.Select(p => CreateRequest(req, targetType, p.ParameterType)).ToArray();
-                    if (!requests.All(r => _builder.CanResolve(r))) 
+                    if (!requests.All(r => _kernel.CanResolve(r))) 
                         continue;
 
                     var args = requests.Select(request =>
                     {
 
                         if(request.MultiInjection == MultiInjection.None)
-                            return _builder.Resolve(request);
+                            return _kernel.Resolve(request);
 
-                        var enumerable = _builder.ResolveAll(request).ToArray();
+                        var enumerable = _kernel.ResolveAll(request).ToArray();
 
                         if (request.MultiInjection == MultiInjection.List)
                             return CreateList(enumerable, request.ServiceType);
@@ -103,7 +103,7 @@ namespace Envelop
             {
                 ParentRequest = req, 
                 ServiceType = serviceType, 
-                Resolver = _builder, 
+                Resolver = _kernel, 
                 Target = targetType, 
                 MultiInjection = mi
             };
@@ -112,7 +112,7 @@ namespace Envelop
         public IBindingContraints<T> To<TImplementation>(Func<IBuilder, TImplementation> func) 
             where TImplementation : T
         {
-            _binding.Activator = req => func(_builder);
+            _binding.Activator = req => func(_kernel);
 
             return Constraints();
         }
